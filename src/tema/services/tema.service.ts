@@ -5,7 +5,6 @@ import { Tema } from "../entities/tema.entity";
 
 @Injectable()
 export class TemaService {
-    
     constructor(
         @InjectRepository(Tema)
         private temaRepository: Repository<Tema>
