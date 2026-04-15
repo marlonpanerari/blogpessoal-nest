@@ -11,6 +11,7 @@ import { Tema } from './tema/entities/tema.entity';
 import { Usuario } from './usuario/entities/usuario.entity';
 import { ProdService } from './data/prod.service';
 import { ConfigModule } from '@nestjs/config';
+import { DevService } from './data/dev.service';
 
 @Module({
   imports: [

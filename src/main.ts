@@ -2,29 +2,37 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule); // Configuração da aplicação nest, cria a aplicação
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  app.set('trust proxy', 1);
 
   const config = new DocumentBuilder()
     .setTitle('Blog Pessoal')
     .setDescription('Projeto Blog Pessoal')
-    .setContact("Andressa Andrade", "https://github.com/Dessxevy", "andressa.evellyn.andrade@gmail.com")
+    .setContact(
+      'MarlonPanerari',
+      'https://github.com/marlonpanerari',
+      'marlonpanerari@gmail.com',
+    )
     .setVersion('1.0')
     .addBearerAuth()
     .build();
+
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/swagger', app, document);
 
-  process.env.TZ = '-03:00'; // Configuração TimeZone
+  app.useGlobalPipes(new ValidationPipe());
+  app.enableCors();
 
-  app.useGlobalPipes(new ValidationPipe()); //ConfigurÇõ da validação de dados de entrada
-  app.enableCors(); // Configuração de cors para permitir requisições de outras origens
+  const port = process.env.PORT ?? 3000;
+  await app.listen(port);
 
-  await app.listen(process.env.PORT ?? 4000); // Execução da aplicação nest, configuração da porta
+  console.log(`🚀 Aplicação rodando na porta ${port}`);
 }
+
 bootstrap().catch((error) => {
-
-  console.error('Erro ao iniciar aplicação:', error);
+  console.error('❌ Erro ao iniciar aplicação:', error);
 });
-
