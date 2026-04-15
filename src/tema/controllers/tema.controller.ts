@@ -2,9 +2,12 @@ import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Par
 import { JwtAuthGuard } from "../../auth/guard/jwt-auth.guard";
 import { Tema } from "../entities/tema.entity";
 import { TemaService } from "../services/tema.service";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
-@UseGuards(JwtAuthGuard) //Protege TODAS as rotas exigindo token JTW
+@ApiTags('Tema')
+@UseGuards(JwtAuthGuard)
 @Controller("/temas")
+@ApiBearerAuth()
 export class TemaController {
   constructor(private readonly temaService: TemaService) { }
 
@@ -26,13 +29,13 @@ export class TemaController {
     return this.temaService.findAllByDescricao(descricao);
   }
 
-  @Post()
+  @Post('/cadastrar')
   @HttpCode(HttpStatus.CREATED)
   create(@Body() Tema: Tema): Promise<Tema> {
     return this.temaService.create(Tema);
   }
 
-  @Put()
+  @Put('/atualizar')
   @HttpCode(HttpStatus.OK)
   update(@Body() Tema: Tema): Promise<Tema> {
     return this.temaService.update(Tema);
@@ -40,7 +43,7 @@ export class TemaController {
 
   @Delete('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  delete(@Param('id', ParseIntPipe) id: number){
+  delete(@Param('id', ParseIntPipe) id: number) {
     return this.temaService.delete(id);
   }
 }
