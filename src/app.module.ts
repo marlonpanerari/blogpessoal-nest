@@ -25,7 +25,7 @@ import { Usuario } from './usuario/entities/usuario.entity';
     PostagemModule,
     TemaModule,
     AuthModule,
-    UsuarioModule
+    UsuarioModule,
   ],
   controllers: [AppController],
   providers: [AppService],

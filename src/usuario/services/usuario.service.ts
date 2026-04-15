@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Usuario } from '../entities/usuario.entity';
 import { Bcrypt } from '../../auth/bcrypt/bcrypt';
+
  
 @Injectable()
 export class UsuarioService {
@@ -23,7 +24,7 @@ export class UsuarioService {
     async findAll(): Promise<Usuario[]> {
         return await this.usuarioRepository.find({
           relations:{
-            postagem: true
+            postagens: true
           }
         });
  
@@ -36,7 +37,7 @@ export class UsuarioService {
                 id
             },
 			relations:{
-            	postagem: true
+            	postagens: true
           	}
         });
  
